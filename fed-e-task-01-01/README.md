@@ -56,8 +56,7 @@ js中，所有同步任务都在主线程上执行，也可以理解为存在一
 
 
 <br>
-9,
-答案：
+9,答案（如下代码）
 ```
 function setout (val) {
   return new Promise(function(resolve,reject){
@@ -78,7 +77,6 @@ aa.then(function(values){
 }).catch(function(err){
   console.log(err)
 })
-
 ```
 <br>
 
