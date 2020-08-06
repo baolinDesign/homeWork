@@ -309,22 +309,22 @@ module.exports = {
 
 ```
 3,使用 Grunt 完成项目的自动化构建
-(1) 新建项目文件夹 my-grunt
-(2) yarn init --yes  //初始化package文件
-(3) 添加grunt    // yarn add grunt
-(4) 在根目录上添加gruntfile.js文件
+* 新建项目文件夹 my-grunt
+* yarn init --yes  //初始化package文件
+* 添加grunt    // yarn add grunt
+* 在根目录上添加gruntfile.js文件
 安装插件：
-a, 清除插件-清除在项目开发过程中临时生成的文件(指定)
+* 清除插件-清除在项目开发过程中临时生成的文件(指定)
     yarn add grunt-contrib-clean
-b, sass插件-  yarn add grunt-sass sass --dev
-c, 使用es6的语法需要安装babel插件:    yarn add grunt-babel @babel/core @babel/preset-env --dev
-d, 自动加载所有的插件-- yarn add load-grunt-tasks --dev
-e, 监视文件变化
-yarn add grunt-contrib-watch --dev
-f, 浏览器
-yarn add browser-sync --dev
-g, html文件编译处理
-yarn add grunt-web-swig --dev
+* sass插件-  yarn add grunt-sass sass --dev
+* 使用es6的语法需要安装babel插件:    yarn add grunt-babel @babel/core @babel/preset-env --dev
+* 自动加载所有的插件-- yarn add load-grunt-tasks --dev
+* 监视文件变化
+  yarn add grunt-contrib-watch --dev
+* 浏览器
+  yarn add browser-sync --dev
+* html文件编译处理
+  yarn add grunt-web-swig --dev
 
 <!-- 文件内容 -->
 ```
