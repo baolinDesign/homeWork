@@ -1,0 +1,27 @@
+{
+  "name": "my-grunt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "grunt clean",
+    "serve": "grunt serve",
+    "compile": "grunt compile"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "grunt": "^1.2.1",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-clean": "^2.0.0"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.5.1",
+    "browser-sync": "^2.26.12",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^3.1.0",
+    "grunt-web-swig": "^0.3.1",
+    "load-grunt-tasks": "^5.1.0",
+    "sass": "^1.26.10"
+  }
+}

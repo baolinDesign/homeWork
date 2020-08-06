@@ -41,8 +41,464 @@ yarn init
 ```
 yarn add inquirer
 ```
-* 在项目下面创建cli.js的文件
 * 在package.json中添加 bin属性指定脚手架的命令入口文件为cli.js
+* 在项目下面创建并编写cli.js的文件
+```
+#!/usr/bin/env node
+
+// Node CLI 应用入口文件必须要有这样的文件头
+// 如果Linux 或者 Mac 系统下，还需要修改此文件权限为755: chmod 755 cli.js
+
+const path = require('path')
+const fs = require('fs')
+const inquirer = require('inquirer')  // 命令行交互插件
+const ejs = require('ejs')    // 模板引擎
+
+inquirer.prompt([
+  {
+    type: 'input',
+    name: 'name',
+    message: 'Project name?',
+    default: 'my-project'
+  },
+  {
+    type: 'input',
+    name: 'desc',
+    message: 'Project description?'
+  }
+])
+.then(answer => {
+  // 根据用户回答的结果生成文件
+  // 拿到模板文件
+  const template = path.join(__dirname,'templates')
+  // 目标目录
+  const dist = process.cwd()
+
+  // 将模板下的文件全部转换到目标目录
+  fs.readdir(template, (err, files) => {
+    if (err) throw err;
+    files.forEach(file => {
+      // 通过模板引擎渲染文件
+      ejs.renderFile(path.join(template,file), answer, (err, result) => {
+        if(err) throw err
+        // 将结果写入到目标目录
+        fs.writeFileSync(path.join(dist, file),result)
+      })
+    });
+  })
+})
+
+```
+* 将模板文件放入templates/index.html,templates/main.js
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my-project</title>
+</head>
+<body>
+    <h1>project name: my-project</h1>
+    <p>project description: moudle</p>
+
+    <script src="./main.js"></script>
+</body>
+</html>
+```
+---
+```
+const projName = 'my-project';
+
+console.log(`project name: ${projName}`);
+```
+* 执行命令将程序关联到全局: yarn link
+![avatar](http://wx3.sinaimg.cn/large/006z4CF9ly1ghh2xj9pb0j317b0p2q6v.jpg)
+* 退出这个文件夹,重新创建testPro文件夹,并进入这个文件夹
+cd .. / mkdir test-pro / cd test-pro
+![avatar](http://wx1.sinaimg.cn/large/006z4CF9ly1ghh37sfllwj31d00r5q7m.jpg)
+* 执行脚手架 baolin-proj
+![avatar](http://wx2.sinaimg.cn/large/006z4CF9ly1ghh39bzlpyj31a60rqdkq.jpg)
 
 
+---
+2,尝试使用 Gulp 完成项目的自动化构建
+项目说明；这是一个基于gulp构建的项目,使用了swig模板引擎，使用gulp实现了样式编译、脚本编译、页面模板编译、图片和文字之间的转换
+、文件清除、自动加载插件、服务器，热更新、文件压缩等功能。在以后使用中可以直接拿过来就直接使用
+* 创建文件夹 mkdir gulp-project 并进入该文件夹 cd gulp-project
+* yarn init --yes 初始化package.json
+* 安装gulp    yarn add gulp
+* 创建gulpfile.js文件
+```
+const {src, dest, parallel, series, watch} = require('gulp')
 
+const del = require('del')
+
+const browserSync = require('browser-sync')
+
+const loadPlugins = require('gulp-load-plugins')
+
+const plugins = loadPlugins()
+const bs = browserSync.create()
+
+const clean = () => {
+  return del(['dist'])
+}
+
+const data = {
+  menus: [
+    {
+      name: 'Home',
+      icon: 'aperture',
+      link: 'index.html'
+    },
+    {
+      name: 'Features',
+      link: 'features.html'
+    },
+    {
+      name: 'About',
+      link: 'about.html'
+    },
+    {
+      name: 'Contact',
+      link: '#',
+      children: [
+        {
+          name: 'Twitter',
+          link: 'https://twitter.com/w_zce'
+        },
+        {
+          name: 'About',
+          link: 'https://weibo.com/zceme'
+        },
+        {
+          name: 'divider'
+        },
+        {
+          name: 'About',
+          link: 'https://github.com/zce'
+        }
+      ]
+    }
+  ],
+  pkg: require('./package.json'),
+  date: new Date()
+}
+
+const style = () => {
+  return src('src/assets/styles/*.scss', {base: 'src'})
+    .pipe(plugins.sass({ outputStyle: 'expanded' }))
+    .pipe(dest('dist'))
+    .pipe(bs.reload({ stream: true }))
+}
+
+const script = () => {
+  return src('src/assets/scripts/*.js', {base: 'src'})
+    .pipe(plugins.babel({ presets: ['@babel/preset-env'] }))
+    .pipe(dest('dist'))
+    .pipe(bs.reload({ stream: true }))
+}
+
+const page = () => {
+  return src('src/*.html', {base: 'src'})
+    .pipe(plugins.swig({ data, defaults: { cache: false }  }))
+    .pipe(dest('dist'))
+    .pipe(bs.reload({ stream: true }))
+}
+
+const image = () => {
+  return src('src/assets/images/**', {base: 'src'})
+    .pipe(plugins.imagemin())
+    .pipe(dest('dist'))
+}
+
+const font = () => {
+  return src('src/assets/fonts/**', {base: 'src'})
+    .pipe(plugins.imagemin())
+    .pipe(dest('dist'))
+}
+
+const extra = () => {
+  return src('public/**', {base:'public'})
+    .pipe(dest('dist'))
+}
+
+const serve = () => {
+  watch('src/assets/styles/*.scss', style)
+  watch('src/assets/scripts/*.js', script)
+  watch('src/*.html', page)
+  // watch('src/assets/images/**', image)
+  // watch('src/assets/fonts/**', font)
+  // watch('public/**', extra)
+  watch([
+    'src/assets/images/**',
+    'src/assets/fonts/**',
+    'public/**'
+  ], bs.reload)
+
+  bs.init({
+    notify: false,
+    port: 2080,
+    // open: true,  是否打开浏览器
+    // files: 'dist/**',  // dist目录里面的文件发生改变后，浏览器自动更新
+    server: {
+      baseDir: ['dist','src','public'],
+      routes: {
+        '/node_modules': 'node_modules'
+      }
+    }
+  })
+}
+
+const useref = ()=> {
+  return src('dist/*.html', { base: 'dist' })
+    .pipe(plugins.useref({ searchPath: ['dist', '.'] }))
+    // html js css
+    .pipe(dest('dist'))
+}
+
+const compile = parallel(style, script, page)
+
+// 上线之前执行的任务
+const build = series(clean, parallel(compile, image, font, extra))
+// 开发时执行的任务
+const develop = series(compile, serve)
+
+module.exports = {
+  clean,
+  compile,
+  build,
+  develop,
+  useref
+}
+```
+* package.json文件
+```
+{
+  "name": "gulp_demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "gulp clean",
+    "compile": "gulp compile",
+    "develop": "gulp develop",
+    "build": "gulp build"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "browser-sync": "^2.26.10",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-load-plugins": "^2.0.3",
+    "gulp-sass": "^4.1.0",
+    "gulp-swig": "^0.9.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-useref": "^4.0.1"
+  },
+  "dependencies": {
+    "bootstrap": "^4.5.0"
+  }
+}
+
+```
+3,使用 Grunt 完成项目的自动化构建
+(1) 新建项目文件夹 my-grunt
+(2) yarn init --yes  //初始化package文件
+(3) 添加grunt    // yarn add grunt
+(4) 在根目录上添加gruntfile.js文件
+安装插件：
+a, 清除插件-清除在项目开发过程中临时生成的文件(指定)
+    yarn add grunt-contrib-clean
+b, sass插件-  yarn add grunt-sass sass --dev
+c, 使用es6的语法需要安装babel插件:    yarn add grunt-babel @babel/core @babel/preset-env --dev
+d, 自动加载所有的插件-- yarn add load-grunt-tasks --dev
+e, 监视文件变化
+yarn add grunt-contrib-watch --dev
+f, 浏览器
+yarn add browser-sync --dev
+g, html文件编译处理
+yarn add grunt-web-swig --dev
+
+<!-- 文件内容 -->
+```
+// Grunt 的入口文件
+// 用于定义一些需要 Grunt 自动执行的任务
+//  需要导出一个函数
+//  此函数接收一个 grunt 的形参，内部提供一些创建任务时可以用到的 API
+
+const sass = require('sass')
+const loadGruntTasks = require('load-grunt-tasks')
+const browserSync = require("browser-sync")
+const bs = browserSync.create()
+
+const data = {
+  menus: [
+    {
+      name: 'Home',
+      icon: 'aperture',
+      link: 'index.html'
+    },
+    {
+      name: 'Features',
+      link: 'features.html'
+    },
+    {
+      name: 'About',
+      link: 'about.html'
+    },
+    {
+      name: 'Contact',
+      link: '#',
+      children: [
+        {
+          name: 'Twitter',
+          link: 'https://twitter.com/w_zce'
+        },
+        {
+          name: 'About',
+          link: 'https://weibo.com/zceme'
+        },
+        {
+          name: 'divider'
+        },
+        {
+          name: 'About',
+          link: 'https://github.com/zce'
+        }
+      ]
+    }
+  ],
+  pkg: require('./package.json'),
+  date: new Date()
+}
+
+module.exports = grunt => {
+  grunt.initConfig({
+    // 清除文件功能
+    clean: ['dist/**'],
+    // sass转化为css
+    sass: {
+      options: {
+        sourceMap: true, //设置后会生成相应的sourceMap文件
+        implementation: sass
+      },
+      main: {
+        files: {
+          // 目标文件：源文件
+          'dist/assets/styles/main.css': 'src/assets/styles/main.scss'
+        }
+      }
+    },
+    // es6转化为es5
+    babel: {
+      options: {
+        presets: ['@babel/preset-env'],
+        sourceMap: true
+      },
+      main: {
+        files: {
+          // 目标文件：源文件
+          'dist/assets/scripts/main.js': 'src/assets/scripts/main.js'
+        }
+      }
+    },
+    web_swig: {
+      options: {
+        swigOptions: {
+          cache: false
+        },
+        getData: function (tpl) {
+          return data;
+        }
+      },
+      main: {
+        expand: true,
+        cwd: 'src/',
+        src: "**/*.html",
+        dest: "dist/"
+      },
+    },
+    // 热更新--监视功能
+    watch: {
+      js: {
+        files: ['src/assets/scripts/*.js'],
+        tasks: ['babel']
+      },
+      css: {
+        files: ['src/assets/styles/*.scss'],
+        tasks: ['sass', 'bs-reload']
+      },
+      html: {
+        files: ['src/**/*.html'],
+        tasks: ['web_swig', 'bs-reload']
+      }
+    },
+  })
+  // 启动browserSync
+  grunt.registerTask("bs", function () {
+    const done = this.async();
+    bs.init({
+      notify: false,
+      port: grunt.option('port') || 2080,
+      open: grunt.option('open'),
+      // files: 'temp/**',
+      server: {
+        baseDir: ['dist', 'src', 'public'], // 按顺序查找
+        routes: {
+          '/node_modules': 'node_modules'
+        }
+      }
+    }, function (err, bs) {
+      done();
+    });
+  });
+
+  loadGruntTasks(grunt) //自动加载所有的 grunt 插件中的任务
+  grunt.registerTask('compile', ['sass', 'babel', 'web_swig'])
+
+  grunt.registerTask('serve', ['compile', 'bs', 'watch'])
+}
+```
+
+<!-- pakage.json -->
+```
+{
+  "name": "my-grunt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "grunt clean",
+    "serve": "grunt serve",
+    "compile": "grunt compile"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "grunt": "^1.2.1",
+    "grunt-babel": "^8.0.0",
+    "grunt-contrib-clean": "^2.0.0"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.5.1",
+    "browser-sync": "^2.26.12",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-sass": "^3.1.0",
+    "grunt-web-swig": "^0.3.1",
+    "load-grunt-tasks": "^5.1.0",
+    "sass": "^1.26.10"
+  }
+}
+
+<!-- 演示命令 -->
+yarn clean    // 清除文件
+yarn compile
+yarn serve
+```
