@@ -10,6 +10,7 @@
 ## 2、Loader 和 Plugin 有哪些不同？请描述一下开发 Loader 和 Plugin 的思路。
 答：Loader是对指定的资源进行处理，将资源文件从输入到输出之间的一个转换，将资源文件转化为js模块
    Plugin拥有更宽的能力范围，Webpack要求插件必须是一个函数或者是一个包含apply方法的对象。通过在生命周期的钩子中挂载函数实现扩展。插件机制的是webpack一个核心特性，目的是为了增强webpack自动化方面的能力。
+
    开发 Loader 的思路：
    1,通过module.exports导出一个函数;
    2,该函数默认参数一个参数source(即要处理的资源文件)
