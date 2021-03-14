@@ -1,0 +1,292 @@
+{
+  "rightsSituationSetting": "SET_RIGHT_TITLE",
+  "movieOwnRightsReqList": [
+    {
+      "rightInfoId": 12,
+      "rightInfoName": "电视权利",
+      "rightInfoParentId": "",
+      "exclusiveList": [
+        {
+          "id": 7,
+          "name": "中国",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 1
+        },
+        {
+          "id": 10,
+          "name": "阿富汗",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 1
+        },
+        {
+          "id": 12,
+          "name": "阿拉伯联合酋长国",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 1
+        },
+        {
+          "id": 2,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 2,
+          "alias": "欧洲"
+        }
+      ],
+      "nonExclusiveList": [
+        {
+          "id": 3,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 3,
+          "alias": "非洲"
+        },
+        {
+          "id": 6,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 6,
+          "alias": "大洋洲"
+        }
+      ]
+    },
+    {
+      "rightInfoId": 17,
+      "rightInfoName": "VOD",
+      "rightInfoParentId": 16,
+      "exclusiveList": [
+        {
+          "id": 1,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 1,
+          "alias": "亚洲"
+        },
+        {
+          "id": 2,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 2,
+          "alias": "欧洲"
+        }
+      ],
+      "nonExclusiveList": [
+        {
+          "id": 9,
+          "name": "阿尔及利亚",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 3
+        },
+        {
+          "id": 16,
+          "name": "阿森松岛",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 3
+        },
+        {
+          "id": 17,
+          "name": "埃及",
+          "placeType": "COUNTRY",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 3
+        },
+        {
+          "id": 294,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 294,
+          "alias": "中美洲"
+        }
+      ]
+    },
+    {
+      "rightInfoName": "自定义权利008",
+      "rightInfoParentId": "",
+      "isCustom": true,
+      "exclusiveList": [
+        {
+          "id": 3,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 3,
+          "alias": "非洲"
+        },
+        {
+          "id": 2,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 2,
+          "alias": "欧洲"
+        }
+      ],
+      "nonExclusiveList": [
+        {
+          "id": 1,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 1,
+          "alias": "亚洲"
+        },
+        {
+          "id": 5,
+          "name": "全部",
+          "placeType": "CONTINENT",
+          "isGloBal": false,
+          "checked": true,
+          "disabled": false,
+          "parentId": 5,
+          "alias": "南美"
+        }
+      ]
+    }
+  ],
+  "hasSaleRightsList": [],
+  "forSaleRightsList": [],
+  "mainImagePosterList": [
+    {
+      "contentUrl": "aws-test-com-huacemedia-temp/5/blank_contract.png",
+      "name": "blank_contract.png",
+      "url": "/api/common/showPic/aws-test-com-huacemedia-temp/5/blank_contract.png",
+      "uid": 1612088393871,
+      "status": "success"
+    }
+  ],
+  "stillsList": [
+    {
+      "contentUrl": "aws-test-com-huacemedia-temp/5/blank_contract.png",
+      "name": "blank_contract.png",
+      "url": "/api/common/showPic/aws-test-com-huacemedia-temp/5/blank_contract.png",
+      "uid": 1612088397353,
+      "status": "success"
+    }
+  ],
+  "trailerList": {
+    "isLimit": false,
+    "list": []
+  },
+  "sampleList": {
+    "isLimit": false,
+    "list": []
+  },
+  "proposalList": [],
+  "subtitleList": [],
+  "movieCnName": "2021片名",
+  "movieEnName": "eee",
+  "alias": [
+    {
+      "cnAlias": "eee",
+      "enAlias": "eeee"
+    }
+  ],
+  "seasonNumber": "1",
+  "resourceNumber": "1",
+  "resourceAvgDuraction": "1",
+  "categoryId": 1,
+  "styleInfoList": [
+    105,
+    106
+  ],
+  "premiereTime": "",
+  "broadcastStatusCode": "MOVIE_NOT_PALYED",
+  "definitionCode": "HD,4K",
+  "labelCnNameList": [
+    "经典IP",
+    "2020年度现象级热播剧",
+    "经典IP强势回归"
+  ],
+  "labelEnNameList": [
+    "classic story",
+    "hot topics",
+    "交响乐总监-郎朗"
+  ],
+  "cnDescribe": "情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗",
+  "enDescribe": "情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗概情梗",
+  "productionTime": "2020-01-01 00:00:00",
+  "productionCompanyCn": "eeee",
+  "productionCompanyEn": "eee",
+  "publisherCompanyCn": "ee",
+  "publisherCompanyEn": "ee",
+  "countryIdList": [
+    13,
+    12,
+    11
+  ],
+  "acousticLanguageCode": "AFRIKAANS",
+  "dubLagList": [
+    "AFRIKAANS"
+  ],
+  "subLagList": [
+    "AMHARIC"
+  ],
+  "dubbingLag": true,
+  "subtitleLag": true,
+  "directorList": [
+    2
+  ],
+  "screenwriterList": [],
+  "starringList": [
+    4
+  ],
+  "movieAwardsDtoList": [
+    {
+      "awardsCnName": "eee",
+      "awardsEnName": "ee"
+    }
+  ],
+  "domesticBoxOffice": "100",
+  "foreignBoxOffice": "100",
+  "imdbId": "",
+  "myDramaListId": "",
+  "movieCopyrightChainList": [
+    {
+      "contentUrl": "aws-test-com-huacemedia-temp/5/blank_data.png",
+      "name": "blank_data.png",
+      "uid": 1612088507857,
+      "status": "success"
+    }
+  ],
+  "type": "PENDING"
+}
