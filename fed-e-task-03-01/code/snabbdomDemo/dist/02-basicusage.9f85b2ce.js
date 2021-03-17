@@ -681,24 +681,26 @@ function h(sel, b, c) {
 }
 
 ;
-},{"./vnode.js":"node_modules/snabbdom/build/package/vnode.js","./is.js":"node_modules/snabbdom/build/package/is.js"}],"src/01-basicusage.js":[function(require,module,exports) {
+},{"./vnode.js":"node_modules/snabbdom/build/package/vnode.js","./is.js":"node_modules/snabbdom/build/package/is.js"}],"src/02-basicusage.js":[function(require,module,exports) {
 "use strict";
 
 var _init = require("snabbdom/build/package/init");
 
 var _h = require("snabbdom/build/package/h");
 
-var patch = (0, _init.init)([]); // 第一个参数： 标签+选择器
-// 第二个参数： 如果是自符串就是标签中的文本内容
-
-var vnode = (0, _h.h)('div#container.cls', 'Hello World');
-var app = document.querySelector('#app'); // 第一个参数： 旧的 VNode, 可以是 DOM 元素
-// 第二个参数： 新的 VNode
-// 返回新的 VNode
-
+var patch = (0, _init.init)([]);
+var vnode = (0, _h.h)('div#container.cls', [(0, _h.h)('h1', 'hello snabbdom'), (0, _h.h)('p', '这是p')]);
+var app = document.querySelector('#app');
 var oldVnode = patch(app, vnode);
-vnode = (0, _h.h)('div#container.xxx', 'hello snabbdom');
-patch(oldVnode, vnode);
+setTimeout(function () {
+  // vnode = h('div#container', [
+  //   h('h1', 'hello world'),
+  //   h('p', 'hello p')
+  // ])
+  // patch(oldVnode, vnode)
+  // 清楚div中的内容
+  patch(oldVnode, (0, _h.h)('!'));
+}, 2000);
 },{"snabbdom/build/package/init":"node_modules/snabbdom/build/package/init.js","snabbdom/build/package/h":"node_modules/snabbdom/build/package/h.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -902,5 +904,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/01-basicusage.js"], null)
-//# sourceMappingURL=/01-basicusage.8fdafd7a.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/02-basicusage.js"], null)
+//# sourceMappingURL=/02-basicusage.9f85b2ce.js.map

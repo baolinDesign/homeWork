@@ -12,10 +12,19 @@ this.$set(this.someObject,'b',2)
 Vue.set的内部原理: 类似于调用 defineReactive(obj, key, val) 方法，利用 Object.defineProperty 的 getter 和 setter 实现响应式数据。
 
 ## 2、请简述 Diff 算法的执行过程
-答：
+答：树的完全 diff 算法是一个时间复杂度为 O(n*3） ，vue 进行优化转化成 O(n)
+1)，最小量更新， key是这个节点的唯一标识，告诉 diff 算法，在更改前后它们是同一个 DOM 节点
+2)，只有是同一个虚拟节点才会进行精细化比较，否则就是暴力删除旧的，插入新的。
+3)，只进行同层比较，不会进行跨层比较。
+diff 算法的优化策略:
+a,旧前与新前（先比开头，后插入和删除节点的这种情况）
+b,旧后与新后（比结尾，前插入或删除的情况）
+c,旧前与新后（头与尾比，此种发生了，涉及移动节点，那么新前指向的节点，移动到旧后之后）
+d,旧后与新前（尾与头比，此种发生了，涉及移动节点，那么新前指向的节点，移动到旧前之前）
 
 # 编程题
 ## 1、模拟 VueRouter 的 hash 模式的实现，实现思路和 History 模式类似，把 URL 中的 # 后面的内容作为路由的地址，可以通过 hashchange 事件监听路由地址的变化。
+答： 参考项目路径 ./code/historydemo/hashRouter
 
 ## 2、在模拟 Vue.js 响应式源码的基础上实现 v-html 指令，以及 v-on 指令。
 答: 参考项目: ./code/miniVue
@@ -57,3 +66,4 @@ if (attrName.startsWith('on')) {
 ```
 
 ## 3、参考 Snabbdom 提供的电影列表的示例，利用Snabbdom 实现类似的效果
+答：参考项目: ./code/snabbdomDemo

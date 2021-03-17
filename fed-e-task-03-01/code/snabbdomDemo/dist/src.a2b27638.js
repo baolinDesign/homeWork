@@ -681,25 +681,511 @@ function h(sel, b, c) {
 }
 
 ;
-},{"./vnode.js":"node_modules/snabbdom/build/package/vnode.js","./is.js":"node_modules/snabbdom/build/package/is.js"}],"src/01-basicusage.js":[function(require,module,exports) {
+},{"./vnode.js":"node_modules/snabbdom/build/package/vnode.js","./is.js":"node_modules/snabbdom/build/package/is.js"}],"node_modules/snabbdom/build/package/modules/style.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.styleModule = void 0;
+// Bindig `requestAnimationFrame` like this fixes a bug in IE/Edge. See #360 and #409.
+var raf = typeof window !== 'undefined' && window.requestAnimationFrame.bind(window) || setTimeout;
+
+var nextFrame = function (fn) {
+  raf(function () {
+    raf(fn);
+  });
+};
+
+var reflowForced = false;
+
+function setNextFrame(obj, prop, val) {
+  nextFrame(function () {
+    obj[prop] = val;
+  });
+}
+
+function updateStyle(oldVnode, vnode) {
+  var cur;
+  var name;
+  var elm = vnode.elm;
+  var oldStyle = oldVnode.data.style;
+  var style = vnode.data.style;
+  if (!oldStyle && !style) return;
+  if (oldStyle === style) return;
+  oldStyle = oldStyle || {};
+  style = style || {};
+  var oldHasDel = 'delayed' in oldStyle;
+
+  for (name in oldStyle) {
+    if (!style[name]) {
+      if (name[0] === '-' && name[1] === '-') {
+        elm.style.removeProperty(name);
+      } else {
+        elm.style[name] = '';
+      }
+    }
+  }
+
+  for (name in style) {
+    cur = style[name];
+
+    if (name === 'delayed' && style.delayed) {
+      for (const name2 in style.delayed) {
+        cur = style.delayed[name2];
+
+        if (!oldHasDel || cur !== oldStyle.delayed[name2]) {
+          setNextFrame(elm.style, name2, cur);
+        }
+      }
+    } else if (name !== 'remove' && cur !== oldStyle[name]) {
+      if (name[0] === '-' && name[1] === '-') {
+        elm.style.setProperty(name, cur);
+      } else {
+        elm.style[name] = cur;
+      }
+    }
+  }
+}
+
+function applyDestroyStyle(vnode) {
+  var style;
+  var name;
+  var elm = vnode.elm;
+  var s = vnode.data.style;
+  if (!s || !(style = s.destroy)) return;
+
+  for (name in style) {
+    elm.style[name] = style[name];
+  }
+}
+
+function applyRemoveStyle(vnode, rm) {
+  var s = vnode.data.style;
+
+  if (!s || !s.remove) {
+    rm();
+    return;
+  }
+
+  if (!reflowForced) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    vnode.elm.offsetLeft;
+    reflowForced = true;
+  }
+
+  var name;
+  var elm = vnode.elm;
+  var i = 0;
+  var compStyle;
+  var style = s.remove;
+  var amount = 0;
+  var applied = [];
+
+  for (name in style) {
+    applied.push(name);
+    elm.style[name] = style[name];
+  }
+
+  compStyle = getComputedStyle(elm);
+  var props = compStyle['transition-property'].split(', ');
+
+  for (; i < props.length; ++i) {
+    if (applied.indexOf(props[i]) !== -1) amount++;
+  }
+
+  elm.addEventListener('transitionend', function (ev) {
+    if (ev.target === elm) --amount;
+    if (amount === 0) rm();
+  });
+}
+
+function forceReflow() {
+  reflowForced = false;
+}
+
+const styleModule = {
+  pre: forceReflow,
+  create: updateStyle,
+  update: updateStyle,
+  destroy: applyDestroyStyle,
+  remove: applyRemoveStyle
+};
+exports.styleModule = styleModule;
+},{}],"node_modules/snabbdom/build/package/modules/props.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.propsModule = void 0;
+
+function updateProps(oldVnode, vnode) {
+  var key;
+  var cur;
+  var old;
+  var elm = vnode.elm;
+  var oldProps = oldVnode.data.props;
+  var props = vnode.data.props;
+  if (!oldProps && !props) return;
+  if (oldProps === props) return;
+  oldProps = oldProps || {};
+  props = props || {};
+
+  for (key in props) {
+    cur = props[key];
+    old = oldProps[key];
+
+    if (old !== cur && (key !== 'value' || elm[key] !== cur)) {
+      elm[key] = cur;
+    }
+  }
+}
+
+const propsModule = {
+  create: updateProps,
+  update: updateProps
+};
+exports.propsModule = propsModule;
+},{}],"node_modules/snabbdom/build/package/modules/class.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.classModule = void 0;
+
+function updateClass(oldVnode, vnode) {
+  var cur;
+  var name;
+  var elm = vnode.elm;
+  var oldClass = oldVnode.data.class;
+  var klass = vnode.data.class;
+  if (!oldClass && !klass) return;
+  if (oldClass === klass) return;
+  oldClass = oldClass || {};
+  klass = klass || {};
+
+  for (name in oldClass) {
+    if (oldClass[name] && !Object.prototype.hasOwnProperty.call(klass, name)) {
+      // was `true` and now not provided
+      elm.classList.remove(name);
+    }
+  }
+
+  for (name in klass) {
+    cur = klass[name];
+
+    if (cur !== oldClass[name]) {
+      elm.classList[cur ? 'add' : 'remove'](name);
+    }
+  }
+}
+
+const classModule = {
+  create: updateClass,
+  update: updateClass
+};
+exports.classModule = classModule;
+},{}],"node_modules/snabbdom/build/package/modules/eventListeners.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.eventListenersModule = void 0;
+
+function invokeHandler(handler, vnode, event) {
+  if (typeof handler === 'function') {
+    // call function handler
+    handler.call(vnode, event, vnode);
+  } else if (typeof handler === 'object') {
+    // call multiple handlers
+    for (var i = 0; i < handler.length; i++) {
+      invokeHandler(handler[i], vnode, event);
+    }
+  }
+}
+
+function handleEvent(event, vnode) {
+  var name = event.type;
+  var on = vnode.data.on; // call event handler(s) if exists
+
+  if (on && on[name]) {
+    invokeHandler(on[name], vnode, event);
+  }
+}
+
+function createListener() {
+  return function handler(event) {
+    handleEvent(event, handler.vnode);
+  };
+}
+
+function updateEventListeners(oldVnode, vnode) {
+  var oldOn = oldVnode.data.on;
+  var oldListener = oldVnode.listener;
+  var oldElm = oldVnode.elm;
+  var on = vnode && vnode.data.on;
+  var elm = vnode && vnode.elm;
+  var name; // optimization for reused immutable handlers
+
+  if (oldOn === on) {
+    return;
+  } // remove existing listeners which no longer used
+
+
+  if (oldOn && oldListener) {
+    // if element changed or deleted we remove all existing listeners unconditionally
+    if (!on) {
+      for (name in oldOn) {
+        // remove listener if element was changed or existing listeners removed
+        oldElm.removeEventListener(name, oldListener, false);
+      }
+    } else {
+      for (name in oldOn) {
+        // remove listener if existing listener removed
+        if (!on[name]) {
+          oldElm.removeEventListener(name, oldListener, false);
+        }
+      }
+    }
+  } // add new listeners which has not already attached
+
+
+  if (on) {
+    // reuse existing listener or create new
+    var listener = vnode.listener = oldVnode.listener || createListener(); // update vnode for listener
+
+    listener.vnode = vnode; // if element changed or added we add all needed listeners unconditionally
+
+    if (!oldOn) {
+      for (name in on) {
+        // add listener if element was changed or new listeners added
+        elm.addEventListener(name, listener, false);
+      }
+    } else {
+      for (name in on) {
+        // add listener if new listener added
+        if (!oldOn[name]) {
+          elm.addEventListener(name, listener, false);
+        }
+      }
+    }
+  }
+}
+
+const eventListenersModule = {
+  create: updateEventListeners,
+  update: updateEventListeners,
+  destroy: updateEventListeners
+};
+exports.eventListenersModule = eventListenersModule;
+},{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 var _init = require("snabbdom/build/package/init");
 
 var _h = require("snabbdom/build/package/h");
 
-var patch = (0, _init.init)([]); // 第一个参数： 标签+选择器
-// 第二个参数： 如果是自符串就是标签中的文本内容
+var _style = require("snabbdom/build/package/modules/style");
 
-var vnode = (0, _h.h)('div#container.cls', 'Hello World');
-var app = document.querySelector('#app'); // 第一个参数： 旧的 VNode, 可以是 DOM 元素
-// 第二个参数： 新的 VNode
-// 返回新的 VNode
+var _props = require("snabbdom/build/package/modules/props");
 
-var oldVnode = patch(app, vnode);
-vnode = (0, _h.h)('div#container.xxx', 'hello snabbdom');
-patch(oldVnode, vnode);
-},{"snabbdom/build/package/init":"node_modules/snabbdom/build/package/init.js","snabbdom/build/package/h":"node_modules/snabbdom/build/package/h.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _class = require("snabbdom/build/package/modules/class");
+
+var _eventListeners = require("snabbdom/build/package/modules/eventListeners");
+
+var patch = (0, _init.init)([_class.classModule, _props.propsModule, _style.styleModule, _eventListeners.eventListenersModule]);
+var vnode;
+var nextKey = 11;
+var margin = 8;
+var sortBy = 'rank';
+var totalHeight = 0;
+var originalData = [{
+  rank: 1,
+  title: 'The Shawshank Redemption',
+  desc: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
+  elmHeight: 0
+}, {
+  rank: 2,
+  title: 'The Godfather',
+  desc: 'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
+  elmHeight: 0
+}, {
+  rank: 3,
+  title: 'The Godfather: Part II',
+  desc: 'The early life and career of Vito Corleone in 1920s New York is portrayed while his son, Michael, expands and tightens his grip on his crime syndicate stretching from Lake Tahoe, Nevada to pre-revolution 1958 Cuba.',
+  elmHeight: 0
+}, {
+  rank: 4,
+  title: 'The Dark Knight',
+  desc: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, the caped crusader must come to terms with one of the greatest psychological tests of his ability to fight injustice.',
+  elmHeight: 0
+}, {
+  rank: 5,
+  title: 'Pulp Fiction',
+  desc: 'The lives of two mob hit men, a boxer, a gangster\'s wife, and a pair of diner bandits intertwine in four tales of violence and redemption.',
+  elmHeight: 0
+}, {
+  rank: 6,
+  title: 'Schindler\'s List',
+  desc: 'In Poland during World War II, Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.',
+  elmHeight: 0
+}, {
+  rank: 7,
+  title: '12 Angry Men',
+  desc: 'A dissenting juror in a murder trial slowly manages to convince the others that the case is not as obviously clear as it seemed in court.',
+  elmHeight: 0
+}, {
+  rank: 8,
+  title: 'The Good, the Bad and the Ugly',
+  desc: 'A bounty hunting scam joins two men in an uneasy alliance against a third in a race to find a fortune in gold buried in a remote cemetery.',
+  elmHeight: 0
+}, {
+  rank: 9,
+  title: 'The Lord of the Rings: The Return of the King',
+  desc: 'Gandalf and Aragorn lead the World of Men against Sauron\'s army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.',
+  elmHeight: 0
+}, {
+  rank: 10,
+  title: 'Fight Club',
+  desc: 'An insomniac office worker looking for a way to change his life crosses paths with a devil-may-care soap maker and they form an underground fight club that evolves into something much, much more...',
+  elmHeight: 0
+}];
+var data = [originalData[0], originalData[1], originalData[2], originalData[3], originalData[4], originalData[5], originalData[6], originalData[7], originalData[8], originalData[9]];
+
+function movieView(movie) {
+  return (0, _h.h)('div.row', {
+    key: movie.rank,
+    style: {
+      opacity: '0',
+      transform: 'translate(-200px)',
+      delayed: {
+        transform: "translateY(".concat(movie.offset, "px)"),
+        opacity: '1'
+      },
+      remove: {
+        opacity: '0',
+        transform: "translateY(".concat(movie.offset, "px) translateX(200px)")
+      }
+    },
+    hook: {
+      insert: function insert(vnode) {
+        movie.elmHeight = vnode.elm.offsetHeight;
+      }
+    }
+  }, [(0, _h.h)('div', {
+    style: {
+      fontWeight: 'bold'
+    }
+  }, movie.rank), (0, _h.h)('div', movie.title), (0, _h.h)('div', movie.desc), (0, _h.h)('div.btn.rm-btn', {
+    on: {
+      click: function click() {
+        remove(movie);
+      }
+    }
+  }, 'x')]);
+}
+
+function view(data) {
+  return (0, _h.h)('div#container', [(0, _h.h)('h1', 'Top 10 movies'), (0, _h.h)('div', [(0, _h.h)('a.btn.add', {
+    on: {
+      click: add
+    }
+  }, 'Add'), 'Sort by: ', (0, _h.h)('span.btn-group', [(0, _h.h)('a.btn.rank', {
+    class: {
+      active: sortBy === 'rank'
+    },
+    on: {
+      click: function click() {
+        changeSort('rank');
+      }
+    }
+  }, 'Rank'), (0, _h.h)('a.btn.title', {
+    class: {
+      active: sortBy === 'title'
+    },
+    on: {
+      click: function click() {
+        changeSort('title');
+      }
+    }
+  }, 'Title'), (0, _h.h)('a.btn.desc', {
+    class: {
+      active: sortBy === 'desc'
+    },
+    on: {
+      click: function click() {
+        changeSort('desc');
+      }
+    }
+  }, 'Description')])]), (0, _h.h)('div.list', {
+    style: {
+      height: totalHeight + 'px'
+    }
+  }, data.map(movieView))]);
+}
+
+function add() {
+  var n = originalData[Math.floor(Math.random() * 10)];
+  data = [{
+    rank: nextKey++,
+    title: n.title,
+    desc: n.desc,
+    elmHeight: 0
+  }].concat(data);
+  render();
+  render();
+}
+
+function remove(movie) {
+  console.log(movie);
+  data = data.filter(function (m) {
+    return m !== movie;
+  });
+  render();
+}
+
+function changeSort(prop) {
+  console.log(prop);
+  sortBy = prop;
+  data.sort(function (a, b) {
+    if (a[prop] > b[prop]) {
+      return 1;
+    }
+
+    if (a[prop] < b[prop]) {
+      return -1;
+    }
+
+    return 0;
+  });
+  render();
+}
+
+function render() {
+  data = data.reduce(function (acc, m) {
+    var last = acc[acc.length - 1];
+    m.offset = last ? last.offset + last.elmHeight + margin : margin;
+    return acc.concat(m);
+  }, []);
+
+  if (data.length === 0) {
+    totalHeight = 0;
+  } else {
+    totalHeight = data[data.length - 1].offset + data[data.length - 1].elmHeight;
+  }
+
+  vnode = patch(vnode, view(data));
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  var container = document.getElementById('container');
+  vnode = patch(container, view(data));
+  render();
+});
+},{"snabbdom/build/package/init":"node_modules/snabbdom/build/package/init.js","snabbdom/build/package/h":"node_modules/snabbdom/build/package/h.js","snabbdom/build/package/modules/style":"node_modules/snabbdom/build/package/modules/style.js","snabbdom/build/package/modules/props":"node_modules/snabbdom/build/package/modules/props.js","snabbdom/build/package/modules/class":"node_modules/snabbdom/build/package/modules/class.js","snabbdom/build/package/modules/eventListeners":"node_modules/snabbdom/build/package/modules/eventListeners.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -727,7 +1213,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59723" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51162" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -902,5 +1388,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/01-basicusage.js"], null)
-//# sourceMappingURL=/01-basicusage.8fdafd7a.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/index.js"], null)
+//# sourceMappingURL=/src.a2b27638.js.map
