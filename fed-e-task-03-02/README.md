@@ -11,3 +11,27 @@
     (9) 后触发了生命周期的钩子函数mounted,挂载结束，最终返回Vue实例。
 
 
+## 2、请简述 Vue 响应式原理。
+答: Vue 响应式原理其实是在 vm._init() 中完成的, 调用顺序 initState() --> initData() --> observe(). observe() 就是响应式的入口函数.
+(1)observe(value): 这个方法接收一个参数 value, 就是需要处理成响应式的对象; 判断 value 是否为对象, 如果不是直接返回; 判断 value 对象是否有 __ob__ 属性, 如果有直接返回; 如果没有, 创建 observer 对象; 返回 observer 对象;
+(2)Observer: 给 value 对象定义不可枚举的 __ob__ 属性, 记录当前的 observer 对象; 数组的响应式处理,覆盖原生的 push/splice/unshift 等方法, 它们会改变原数组, 当这些方法被调用时会发送通知; 对象的响应式处理, 调用 walk 方法，遍历对象的每个属性, 调用 defineReactive;
+
+(3)defineReactive: 为每一个属性创建 dep 对象, 如果当前属性的值是对象, 再调用 observe; 定义 getter, 收集依赖, 返回属性的值; 定义 setter, 保存新值, 如果新值是对象, 调用 observe, 派发更新(发送通知), 调用 dep.notify();
+
+(4)依赖收集: 在 Watcher 对象的 get 方法中调用 pushTarget 记录 Dep.target 属性;访问 data 中的成员时收集依赖, defineReactive 的 getter 中收集依赖; 把属性对应的 watcher 对象添加到 dep 的 subs 数组中; 给 childOb 收集依赖, 目的是子对象添加和删除成员时发送通知;
+
+(5)Watcher: dep.notify 在调用 watcher 对象的 update() 方法时,调用 queueWatcher(), 判断 watcher 是否被处理, 如果没有的话添加到 queue 队列中, 并调用 flushSchedulerQueue(); 触发 beforeUpdate 钩子, 调用 watcher.run(), run() --> get() --> getter() --> updateComponent, 清空上一次的依赖, 触发 actived 钩子, 触发 updated 钩子.
+
+## 3、请简述虚拟 DOM 中 Key 的作用和好处。
+答：作用：主要用来在虚拟 DOM 的 diff 算法中,在新旧节点的对比时辨别 vnode ,使用key 时, Vue 会基于 key 的变化重新排列元素顺序, 尽可能的复用页面元素, 只找出必须更新的DOM, 最终可以减少DOM操作. 常见的列子是结合 v-for 来进行列表渲染, 或者用于强制替换元素/组件.
+好处:(1) 数据更新时, 可以尽可能的减少DOM操作;
+(2) 列表渲染时, 可以提高列表渲染的效率，提高页面的性能.
+
+## 4、请简述 Vue 中模板编译的过程。
+答: (1) 编译过程的入口函数compileToFunctions是先从缓存中加载编译好的render函数,如果缓存中没有的话, 就去调用compile函数, 在compile函数中, 首先去合并选项, 然后调用baseCompile函数编译模板.
+
+(2) 把模板合并好的选项传递给baseCompile, baseCompile里面完成了模板编译核心的三件事, 首先调用parse函数把模板转换成AST抽象语法树, 然后调用optimize函数对抽象语法树进行优化, 标记静态语法树中的静态根节点（只包含纯文本的静态节点不是静态根节点，因为此时的优化成本大于收益）,patch过程中会跳过静态根节点, 最后调用generate函数, 将AST对象转化为js形式的代码.
+
+当compile执行完毕后, 会回到编译的入口函数compileToFunctions, 通过调用createFunction函数,继续把上一步中生成的字符串形式JS代码转化为函数形式. 当render和staticRenderFns初始化完毕, 挂载到Vue实例的options对应的属性上.
+
+
